@@ -1,0 +1,96 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Exemplo de API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/users": {
+        "get": {
+          "summary": "Listar usuários",
+          "responses": {
+            "200": {
+              "description": "Lista de usuários"
+            }
+          }
+        },
+        "post": {
+          "summary": "Criar usuário",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nome": { "type": "string" },
+                    "email": { "type": "string", "format": "email" }
+                  },
+                  "required": ["nome", "email"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Usuário criado"
+            }
+          }
+        }
+      },
+      "/users/{id}": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "get": {
+          "summary": "Buscar usuário por ID",
+          "responses": {
+            "200": {
+              "description": "Usuário encontrado"
+            },
+            "404": {
+              "description": "Usuário não encontrado"
+            }
+          }
+        },
+        "put": {
+          "summary": "Atualizar usuário",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nome": { "type": "string" },
+                    "email": { "type": "string", "format": "email" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuário atualizado"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Remover usuário",
+          "responses": {
+            "204": {
+              "description": "Usuário removido"
+            }
+          }
+        }
+      }
+    }
+  }
+  
