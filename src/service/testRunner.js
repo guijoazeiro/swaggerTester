@@ -100,3 +100,30 @@ export async function runPutTests(paths) {
   }
   return results;
 }
+
+export async function runDeleteTests(paths) {
+  const results = [];
+  for (const route in paths) {
+    if (paths[route].delete) {
+      const url = `${baseUrl}${formatRoute(route)}`;
+      try {
+        const response = await axios.delete(url);
+        results.push({
+          method: "DELETE",
+          route,
+          error: null,
+          status: response.status,
+        });
+      } catch (err) {
+        const status = err.response?.status ?? "unknown";
+        results.push({
+          method: "DELETE",
+          route,
+          status,
+          error: err.message,
+        });
+      }
+    }
+  }
+  return results;
+}
