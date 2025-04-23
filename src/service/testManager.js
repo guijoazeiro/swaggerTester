@@ -1,7 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-import { runGetTests, runPostTests, runPutTests } from "./testRunner.js";
+import {
+  runGetTests,
+  runPostTests,
+  runPutTests,
+  runDeleteTests,
+} from "./testRunner.js";
 
 export async function runAllTests() {
   const swaggerPath = path.resolve("src", "examples", "api_example.json");
@@ -9,11 +14,11 @@ export async function runAllTests() {
   const swaggerJson = JSON.parse(swaggerRaw);
 
   const paths = swaggerJson.paths;
-  const [getResults, postResults, putResults] = await Promise.all([
-    runGetTests(paths),
-    runPostTests(paths),
-    runPutTests(paths),
-  ]);
 
-  return [...getResults, ...postResults, ...putResults];
+  const postResults = await runPostTests(paths);
+  const getResults = await runGetTests(paths);
+  const putResults = await runPutTests(paths);
+  const deleteResults = await runDeleteTests(paths);
+
+  return [...postResults, ...getResults, ...putResults, ...deleteResults];
 }
