@@ -1,18 +1,17 @@
-import { parseSwagger } from "./service/swaggerParse.js";
-import { runGetTests } from "./service/testRunner.js";
+import { runAllTests } from "./service/testManager.js";
 
-async function main() {
-  const swaggerPath = "src/examples/api_example.json";
-  const api = await parseSwagger(swaggerPath);
-  if (!api) return;
+const results = await runAllTests();
+console.log(results);
 
-  const results = await runGetTests(api.paths);
-  for (const result of results) {
-    if (result.status) {
-      console.log(`${result.route} - ${result.status} - ✅ OK`);
-    } else {
-      console.log(`${result.route} - ${result.error} - ❌ FAIL`);
-    }
+console.log("📊 Resultados dos testes:");
+for (const result of results) {
+  if (!result.error) {
+    console.log(
+      `✅ ${result.method} ${result.route} - Status: ${result.status}`
+    );
+  } else {
+    console.log(
+      `❌ ${result.method} ${result.route} - Status: ${result.status} - Error: ${result.error}`
+    );
   }
 }
-main();
