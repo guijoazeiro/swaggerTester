@@ -1,7 +1,6 @@
 import { runAllTests } from "./service/testManager.js";
 
 const results = await runAllTests();
-console.log(results);
 
 console.log("📊 Resultados dos testes:");
 for (const result of results) {

@@ -25,7 +25,6 @@ export async function runGetTests(paths) {
           status: response.status,
         });
       } catch (err) {
-        console.log(err);
         const status = err.response?.status;
         results.push({
           method: "GET",
@@ -72,5 +71,32 @@ export async function runPostTests(paths) {
     }
   }
 
+  return results;
+}
+
+export async function runPutTests(paths) {
+  const results = [];
+  for (const route in paths) {
+    if (paths[route].put) {
+      const url = `${baseUrl}${formatRoute(route)}`;
+      try {
+        const response = await axios.put(url, {}); // payload mockado
+        results.push({
+          method: "PUT",
+          route,
+          error: null,
+          status: response.status,
+        });
+      } catch (err) {
+        const status = err.response?.status ?? "unknown";
+        results.push({
+          method: "PUT",
+          route,
+          status,
+          error: err.message,
+        });
+      }
+    }
+  }
   return results;
 }
