@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import { runTestsByMethod } from "./testRunner.js";
+import { logResult } from "../utils/logger.js";
 
 export async function runAllTests() {
   const swaggerPath = path.resolve("src", "examples", "api_example.json");
@@ -13,8 +14,11 @@ export async function runAllTests() {
   const allResults = [];
   const methods = ["get", "post", "put", "delete"];
 
+  console.log("📊 Resultados dos testes:");
+
   for (const method of methods) {
     const results = await runTestsByMethod[method](paths);
+    results.forEach(logResult);
     allResults.push(...results);
   }
 
