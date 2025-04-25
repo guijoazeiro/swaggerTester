@@ -1,9 +1,5 @@
-import dotenv from "dotenv";
 import { requestWithFormat } from "../utils/requestWithFormat.js";
-
-dotenv.config();
-
-const baseUrl = process.env.BASE_URL;
+import { baseUrl } from "../config/api.js";
 
 function formatRoute(route) {
   return route.replace(/{[^}]+}/g, "1");
