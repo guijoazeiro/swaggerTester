@@ -1,12 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import {
-  runGetTests,
-  runPostTests,
-  runPutTests,
-  runDeleteTests,
-} from "./testRunner.js";
+import { runTestsByMethod } from "./testRunner.js";
 
 export async function runAllTests() {
   const swaggerPath = path.resolve("src", "examples", "api_example.json");
@@ -15,10 +10,13 @@ export async function runAllTests() {
 
   const paths = swaggerJson.paths;
 
-  const postResults = await runPostTests(paths);
-  const getResults = await runGetTests(paths);
-  const putResults = await runPutTests(paths);
-  const deleteResults = await runDeleteTests(paths);
+  const allResults = [];
+  const methods = ["get", "post", "put", "delete"];
 
-  return [...postResults, ...getResults, ...putResults, ...deleteResults];
+  for (const method of methods) {
+    const results = await runTestsByMethod[method](paths);
+    allResults.push(...results);
+  }
+
+  return allResults;
 }
