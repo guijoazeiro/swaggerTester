@@ -3,6 +3,7 @@ import path from "path";
 
 import { runTestsByMethod } from "./testRunner.js";
 import { logResult } from "../utils/logger.js";
+import { generateHtmlReport } from "../utils/reporter.js";
 
 export async function runAllTests() {
   const swaggerPath = path.resolve("src", "examples", "api_example.json");
@@ -21,6 +22,8 @@ export async function runAllTests() {
     results.forEach(logResult);
     allResults.push(...results);
   }
+
+  generateHtmlReport(allResults);
 
   return allResults;
 }
