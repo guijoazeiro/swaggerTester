@@ -16,44 +16,44 @@
       <h1>📊 Relatório de Testes</h1>
       <div class="summary">
         <span>Total: 5</span>
-        <span>Passaram: 5</span>
-        <span>Falharam: 0</span>
-        <span>Tempo Total: 52ms</span>
+        <span>Passaram: 3</span>
+        <span>Falharam: 2</span>
+        <span>Tempo Total: 34ms</span>
       </div>
       <div>
         
           <div class="result success">
             <strong>GET /users</strong> — 
             Status: 200 — 
-            Tempo: 43ms 
+            Tempo: 27ms 
             
           </div>
         
-          <div class="result success">
+          <div class="result fail">
             <strong>GET /users/{id}</strong> — 
-            Status: 200 — 
+            Status: 404 — 
             Tempo: 3ms 
-            
+            — Erro: Request failed with status code 404
           </div>
         
           <div class="result success">
             <strong>POST /users</strong> — 
             Status: 201 — 
-            Tempo: 3ms 
+            Tempo: 2ms 
             
           </div>
         
-          <div class="result success">
+          <div class="result fail">
             <strong>PUT /users/{id}</strong> — 
-            Status: 200 — 
+            Status: 404 — 
             Tempo: 1ms 
-            
+            — Erro: Request failed with status code 404
           </div>
         
           <div class="result success">
             <strong>DELETE /users/{id}</strong> — 
             Status: 204 — 
-            Tempo: 2ms 
+            Tempo: 1ms 
             
           </div>
         

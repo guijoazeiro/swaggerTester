@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import { runTestsByMethod } from "./testRunner.js";
-import { logResult } from "../utils/logger.js";
+import { logResult, showGroupedTables } from "../utils/logger.js";
 import { generateHtmlReport } from "../utils/reporter.js";
 
 export async function runAllTests() {
@@ -23,6 +23,7 @@ export async function runAllTests() {
     allResults.push(...results);
   }
 
+  showGroupedTables();
   generateHtmlReport(allResults);
 
   return allResults;
