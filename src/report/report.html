@@ -1,39 +1,4 @@
-import fs from "fs";
-import path from "path";
-import open from "open";
-import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-export function generateHtmlReport(results) {
-  const total = results.length;
-  const successCount = results.filter((r) => r.success).length;
-  const errorCount = total - successCount;
-
-  const filePath = path.join(__dirname, "..", "report", "report.html");
-
-  const rows = results
-    .map((result) => {
-      const statusColor = result.success ? "success" : "error";
-      return `
-      <tr class="${statusColor}">
-        <td>${result.method}</td>
-        <td>${result.route}</td>
-        <td>${result.status}</td>
-        <td>${result.responseTime}ms</td>
-        <td>${
-          result.error
-            ? `<button class="view-error" onclick="showErrorModal(\`${escapeHtml(
-                result.error
-              )}\`)">Ver erro</button>`
-            : "-"
-        }</td>
-      </tr>
-    `;
-    })
-    .join("");
-
-  const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,7 +135,47 @@ export function generateHtmlReport(results) {
     </tr>
   </thead>
   <tbody>
-    ${rows}
+    
+      <tr class="success">
+        <td>GET</td>
+        <td>/users</td>
+        <td>200</td>
+        <td>152ms</td>
+        <td>-</td>
+      </tr>
+    
+      <tr class="success">
+        <td>GET</td>
+        <td>/users/{id}</td>
+        <td>200</td>
+        <td>2ms</td>
+        <td>-</td>
+      </tr>
+    
+      <tr class="success">
+        <td>POST</td>
+        <td>/users</td>
+        <td>201</td>
+        <td>2ms</td>
+        <td>-</td>
+      </tr>
+    
+      <tr class="success">
+        <td>PUT</td>
+        <td>/users/{id}</td>
+        <td>200</td>
+        <td>1ms</td>
+        <td>-</td>
+      </tr>
+    
+      <tr class="success">
+        <td>DELETE</td>
+        <td>/users/{id}</td>
+        <td>204</td>
+        <td>2ms</td>
+        <td>-</td>
+      </tr>
+    
   </tbody>
 </table>
 
@@ -190,7 +195,7 @@ new Chart(ctx, {
   data: {
     labels: ['Sucesso', 'Erro'],
     datasets: [{
-      data: [${successCount}, ${errorCount}],
+      data: [5, 0],
       backgroundColor: ['#28a745', '#dc3545'],
     }]
   },
@@ -246,19 +251,3 @@ function escapeHtml(unsafe) {
 
 </body>
 </html>
-`;
-
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, html, "utf-8");
-
-  open(filePath);
-}
-
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
