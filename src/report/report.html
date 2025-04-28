@@ -140,7 +140,7 @@
         <td>GET</td>
         <td>/users</td>
         <td>200</td>
-        <td>152ms</td>
+        <td>19ms</td>
         <td>-</td>
       </tr>
     
@@ -148,8 +148,16 @@
         <td>GET</td>
         <td>/users/{id}</td>
         <td>200</td>
-        <td>2ms</td>
+        <td>3ms</td>
         <td>-</td>
+      </tr>
+    
+      <tr class="error">
+        <td>POST</td>
+        <td>/auth/login</td>
+        <td>401</td>
+        <td>3ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request failed with status code 401`)">Ver erro</button></td>
       </tr>
     
       <tr class="success">
@@ -164,7 +172,7 @@
         <td>PUT</td>
         <td>/users/{id}</td>
         <td>200</td>
-        <td>1ms</td>
+        <td>3ms</td>
         <td>-</td>
       </tr>
     
@@ -172,7 +180,7 @@
         <td>DELETE</td>
         <td>/users/{id}</td>
         <td>204</td>
-        <td>2ms</td>
+        <td>1ms</td>
         <td>-</td>
       </tr>
     
@@ -195,7 +203,7 @@ new Chart(ctx, {
   data: {
     labels: ['Sucesso', 'Erro'],
     datasets: [{
-      data: [5, 0],
+      data: [5, 1],
       backgroundColor: ['#28a745', '#dc3545'],
     }]
   },

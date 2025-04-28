@@ -1,96 +1,147 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "Exemplo de API",
-      "version": "1.0.0"
-    },
-    "paths": {
-      "/users": {
-        "get": {
-          "summary": "Listar usuários",
-          "responses": {
-            "200": {
-              "description": "Lista de usuários"
-            }
-          }
-        },
-        "post": {
-          "summary": "Criar usuário",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "nome": { "type": "string" },
-                    "email": { "type": "string", "format": "email" }
-                  },
-                  "required": ["nome", "email"]
-                }
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Exemplo de API com Auth",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login para obter token JWT",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
               }
             }
-          },
-          "responses": {
-            "201": {
-              "description": "Usuário criado"
-            }
-          }
-        }
-      },
-      "/users/{id}": {
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "get": {
-          "summary": "Buscar usuário por ID",
-          "responses": {
-            "200": {
-              "description": "Usuário encontrado"
-            },
-            "404": {
-              "description": "Usuário não encontrado"
-            }
           }
         },
-        "put": {
-          "summary": "Atualizar usuário",
-          "requestBody": {
-            "required": true,
+        "responses": {
+          "200": {
+            "description": "Token gerado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "nome": { "type": "string" },
-                    "email": { "type": "string", "format": "email" }
+                    "token": { "type": "string" }
                   }
                 }
               }
             }
           },
-          "responses": {
-            "200": {
-              "description": "Usuário atualizado"
+          "401": {
+            "description": "Credenciais inválidas"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Listar usuários",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários"
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar usuário",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "email": { "type": "string", "format": "email" }
+                },
+                "required": ["nome", "email"]
+              }
             }
           }
         },
-        "delete": {
-          "summary": "Remover usuário",
-          "responses": {
-            "204": {
-              "description": "Usuário removido"
+        "responses": {
+          "201": {
+            "description": "Usuário criado"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Buscar usuário por ID",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar usuário",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "email": { "type": "string", "format": "email" }
+                }
+              }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover usuário",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "204": {
+            "description": "Usuário removido"
           }
         }
       }
     }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
   }
-  
+}
