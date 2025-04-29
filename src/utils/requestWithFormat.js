@@ -41,7 +41,7 @@ export async function requestWithFormat({
       route,
       status: err.response?.status ?? "unknown",
       success: false,
-      error: err.message,
+      error: err.response.data.message ?? err.message,
       responseTime: duration,
     });
   }
