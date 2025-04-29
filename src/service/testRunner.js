@@ -6,13 +6,6 @@ function formatRoute(route) {
   return route.replace(/{[^}]+}/g, "1");
 }
 
-const specialRequestBodies = {
-  "/auth/login": {
-    username: process.env.TEST_USERNAME || "admin",
-    password: process.env.TEST_PASSWORD || "admin",
-  },
-};
-
 async function runMethodTests(paths, method, token = "") {
   const results = [];
 
