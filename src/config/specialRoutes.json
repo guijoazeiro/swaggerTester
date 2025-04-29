@@ -1,0 +1,12 @@
+{
+    "/auth/login": {
+      "username": "admin",
+      "password": "admin"
+    },
+    "/user/register": {
+      "username": "exampleuser",
+      "password": "examplepass",
+      "email": "user@example.com"
+    }
+  }
+  

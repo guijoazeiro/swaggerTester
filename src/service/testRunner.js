@@ -1,5 +1,6 @@
 import { requestWithFormat } from "../utils/requestWithFormat.js";
 import { baseUrl } from "../config/envConfig.js";
+import { getRequestBody } from "../utils/getRequestBody.js";
 
 function formatRoute(route) {
   return route.replace(/{[^}]+}/g, "1");
@@ -25,9 +26,12 @@ async function runMethodTests(paths, method, token = "") {
         headers.Authorization = `Bearer ${token}`;
       }
 
+      const data = getRequestBody(route, paths[route][method]);
+
       const result = await requestWithFormat({
         method,
         url,
+        data,
         route,
         headers,
       });
