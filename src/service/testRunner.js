@@ -6,6 +6,12 @@ function formatRoute(route) {
   return route.replace(/{[^}]+}/g, "1");
 }
 
+function extractResponseSchema(pathData, method) {
+  const response200 = pathData[method]?.responses?.["200"];
+  const jsonContent = response200?.content?.["application/json"];
+  return jsonContent?.schema || null;
+}
+
 async function runMethodTests(paths, method, token = "") {
   const results = [];
 
@@ -20,6 +26,7 @@ async function runMethodTests(paths, method, token = "") {
       }
 
       const data = getRequestBody(route, paths[route][method]);
+      const expectedSchema = extractResponseSchema(paths[route], method);
 
       const result = await requestWithFormat({
         method,
@@ -27,6 +34,7 @@ async function runMethodTests(paths, method, token = "") {
         data,
         route,
         headers,
+        expectedSchema,
       });
 
       results.push(result);

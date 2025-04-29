@@ -7,6 +7,7 @@ export async function requestWithFormat({
   data = {},
   route,
   headers = {},
+  schema,
 }) {
   const start = Date.now();
   try {
@@ -18,12 +19,20 @@ export async function requestWithFormat({
     });
 
     const duration = Date.now() - start;
+
+    let validation = { valid: true, errors: [] };
+
+    if (schema) {
+      validation = validateSchema(response.data, schema);
+    }
     return formatResult({
       method: method.toUpperCase(),
       route,
       status: response.status,
       success: true,
       responseTime: duration,
+      validBody: validation.valid,
+      validationErrors: validation.errors,
     });
   } catch (err) {
     const duration = Date.now() - start;
