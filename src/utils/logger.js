@@ -28,26 +28,36 @@ function createTable(results, method) {
     style: { head: [], border: [] },
   });
 
-  results.forEach(({ route, status, success, responseTime, error }) => {
-    const statusIcon = success ? chalk.green("✅") : chalk.red("❌");
+  results.forEach(
+    ({ route, status, success, warning, responseTime, error }) => {
+      const statusIcon = success
+        ? chalk.green.bold("[OK]")
+        : warning
+        ? chalk.yellow.bold("[!]")
+        : chalk.red.bold("[X]");
 
-    const statusColor = success ? chalk.green(status) : chalk.red(status);
+      const statusColor = success
+        ? chalk.green(status)
+        : warning
+        ? chalk.yellow(status)
+        : chalk.red(status);
 
-    const timeColor =
-      responseTime > 1000
-        ? chalk.red(`${responseTime}ms`)
-        : responseTime > 500
-        ? chalk.yellow(`${responseTime}ms`)
-        : chalk.green(`${responseTime}ms`);
+      const timeColor =
+        responseTime > 1000
+          ? chalk.red(`${responseTime}ms`)
+          : responseTime > 500
+          ? chalk.yellow(`${responseTime}ms`)
+          : chalk.green(`${responseTime}ms`);
 
-    table.push([
-      statusIcon,
-      chalk.blue(route),
-      statusColor,
-      timeColor,
-      error ? chalk.redBright(error) : "-",
-    ]);
-  });
+      table.push([
+        statusIcon,
+        chalk.blue(route),
+        statusColor,
+        timeColor,
+        error ? chalk.redBright(error) : "-",
+      ]);
+    }
+  );
 
   return table;
 }

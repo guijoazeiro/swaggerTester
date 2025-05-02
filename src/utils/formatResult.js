@@ -3,6 +3,7 @@ export function formatResult({
   route,
   status,
   success,
+  warning,
   error = null,
   responseTime = null,
 }) {
@@ -11,6 +12,7 @@ export function formatResult({
     route,
     status,
     success,
+    warning,
     error,
     responseTime,
   };

@@ -5,6 +5,15 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export function generateHtmlReport(results) {
   const total = results.length;
   const successCount = results.filter((r) => r.success).length;
@@ -14,20 +23,27 @@ export function generateHtmlReport(results) {
 
   const rows = results
     .map((result) => {
-      const statusColor = result.success ? "success" : "error";
+      let statusColor = result.success ? "success" : "error";
+      if (result.warning) statusColor = "warning";
+
+      let action = "-";
+      if (result.error && result.warning) {
+        action = `<button class="view-error" onclick="showErrorModal(\`${escapeHtml(
+          result.error
+        )}\`)">Ver aviso</button>`;
+      } else if (result.error) {
+        action = `<button class="view-error" onclick="showErrorModal(\`${escapeHtml(
+          result.error
+        )}\`)">Ver erro</button>`;
+      }
+
       return `
       <tr class="${statusColor}">
         <td>${result.method}</td>
         <td>${result.route}</td>
         <td>${result.status}</td>
         <td>${result.responseTime}ms</td>
-        <td>${
-          result.error
-            ? `<button class="view-error" onclick="showErrorModal(\`${escapeHtml(
-                result.error
-              )}\`)">Ver erro</button>`
-            : "-"
-        }</td>
+        <td>${action}</td>
       </tr>
     `;
     })
@@ -84,6 +100,7 @@ export function generateHtmlReport(results) {
     }
     tr.success { background-color: #e6ffed; }
     tr.error { background-color: #ffe6e6; }
+    tr.warning { background-color: #fff3cd; }
     .chart-container {
       width: 100%;
       max-width: 400px;
@@ -153,6 +170,7 @@ export function generateHtmlReport(results) {
   <button onclick="filterResults('all')">Todos</button>
   <button onclick="filterResults('success')">Sucessos</button>
   <button onclick="filterResults('error')">Erros</button>
+  <button onclick="filterResults('warning')">Avisos</button>
 </div>
 
 <div class="chart-container">
@@ -188,10 +206,12 @@ const ctx = document.getElementById('chart').getContext('2d');
 new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ['Sucesso', 'Erro'],
+    labels: ['Sucesso', 'Erro', 'Aviso'],
     datasets: [{
-      data: [${successCount}, ${errorCount}],
-      backgroundColor: ['#28a745', '#dc3545'],
+      data: [${successCount}, ${errorCount}, ${
+    results.filter((r) => r.warning).length
+  }],
+      backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
     }]
   },
   options: {
@@ -233,15 +253,6 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
-
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 </script>
 
 </body>
@@ -252,13 +263,4 @@ function escapeHtml(unsafe) {
   fs.writeFileSync(filePath, html, "utf-8");
 
   open(filePath);
-}
-
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }

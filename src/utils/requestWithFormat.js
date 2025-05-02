@@ -25,6 +25,22 @@ export async function requestWithFormat({
     if (schema) {
       validation = validateSchema(response.data, schema);
     }
+
+    const maxDuration = 10;
+
+    if (duration > maxDuration) {
+      return formatResult({
+        method: method.toUpperCase(),
+        route,
+        status: response.status,
+        warning: true,
+        responseTime: duration,
+        validBody: validation.valid,
+        error: `Request took ${duration}ms. Max duration is ${maxDuration}ms`,
+        validationErrors: validation.errors,
+      });
+    }
+
     return formatResult({
       method: method.toUpperCase(),
       route,
