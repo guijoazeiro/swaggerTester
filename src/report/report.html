@@ -49,6 +49,7 @@
     }
     tr.success { background-color: #e6ffed; }
     tr.error { background-color: #ffe6e6; }
+    tr.warning { background-color: #fff3cd; }
     .chart-container {
       width: 100%;
       max-width: 400px;
@@ -118,6 +119,7 @@
   <button onclick="filterResults('all')">Todos</button>
   <button onclick="filterResults('success')">Sucessos</button>
   <button onclick="filterResults('error')">Erros</button>
+  <button onclick="filterResults('warning')">Avisos</button>
 </div>
 
 <div class="chart-container">
@@ -136,52 +138,52 @@
   </thead>
   <tbody>
     
-      <tr class="success">
+      <tr class="warning">
         <td>GET</td>
         <td>/users</td>
         <td>200</td>
-        <td>19ms</td>
-        <td>-</td>
-      </tr>
-    
-      <tr class="success">
-        <td>GET</td>
-        <td>/users/{id}</td>
-        <td>200</td>
-        <td>3ms</td>
-        <td>-</td>
+        <td>13ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request took 13ms. Max duration is 1ms`)">Ver aviso</button></td>
       </tr>
     
       <tr class="error">
-        <td>POST</td>
-        <td>/auth/login</td>
-        <td>401</td>
+        <td>GET</td>
+        <td>/users/{id}</td>
+        <td>404</td>
         <td>3ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Request failed with status code 401`)">Ver erro</button></td>
+        <td><button class="view-error" onclick="showErrorModal(`Usuário não encontrado`)">Ver erro</button></td>
       </tr>
     
-      <tr class="success">
+      <tr class="warning">
+        <td>POST</td>
+        <td>/auth/login</td>
+        <td>200</td>
+        <td>2ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request took 2ms. Max duration is 1ms`)">Ver aviso</button></td>
+      </tr>
+    
+      <tr class="warning">
         <td>POST</td>
         <td>/users</td>
         <td>201</td>
         <td>2ms</td>
-        <td>-</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request took 2ms. Max duration is 1ms`)">Ver aviso</button></td>
       </tr>
     
-      <tr class="success">
+      <tr class="error">
         <td>PUT</td>
         <td>/users/{id}</td>
-        <td>200</td>
-        <td>3ms</td>
-        <td>-</td>
+        <td>404</td>
+        <td>2ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Usuário não encontrado`)">Ver erro</button></td>
       </tr>
     
-      <tr class="success">
+      <tr class="warning">
         <td>DELETE</td>
         <td>/users/{id}</td>
         <td>204</td>
-        <td>1ms</td>
-        <td>-</td>
+        <td>2ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request took 2ms. Max duration is 1ms`)">Ver aviso</button></td>
       </tr>
     
   </tbody>
@@ -201,10 +203,10 @@ const ctx = document.getElementById('chart').getContext('2d');
 new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ['Sucesso', 'Erro'],
+    labels: ['Sucesso', 'Erro', 'Aviso'],
     datasets: [{
-      data: [5, 1],
-      backgroundColor: ['#28a745', '#dc3545'],
+      data: [0, 6, 4],
+      backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
     }]
   },
   options: {
@@ -245,15 +247,6 @@ window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
-}
-
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 </script>
 

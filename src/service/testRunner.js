@@ -1,6 +1,6 @@
 import { requestWithFormat } from "../utils/requestWithFormat.js";
-import { baseUrl } from "../config/envConfig.js";
 import { getRequestBody } from "../utils/getRequestBody.js";
+import { GlobalConfig } from "../config/globalConfig.js";
 
 function formatRoute(route) {
   return route.replace(/{[^}]+}/g, "1");
@@ -14,6 +14,7 @@ function extractResponseSchema(pathData, method) {
 
 async function runMethodTests(paths, method, token = "") {
   const results = [];
+  const baseUrl = GlobalConfig.baseUrl;
 
   for (const route in paths) {
     if (paths[route][method]) {
