@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { authCredentials, authUrl } from "../config/envConfig.js";
 import { GlobalConfig } from "../config/globalConfig.js";
 dotenv.config();
 
@@ -7,15 +6,15 @@ const authManager = {
   token: "",
   expiresAt: 0,
   credentials: {
-    username: authCredentials.username,
-    password: authCredentials.password,
+    username: "",
+    password: "",
   },
-  authUrl: authUrl,
+  authUrl: "",
 
   override({ url, username, password }) {
     this.authUrl = GlobalConfig.authUrl;
-    this.credentials.username = username;
-    this.credentials.password = password;
+    this.credentials.username = GlobalConfig.authUsername;
+    this.credentials.password = GlobalConfig.authPassword;
   },
 
   async login() {

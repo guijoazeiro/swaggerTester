@@ -1,4 +1,4 @@
-import { authCredentials } from "../config/envConfig.js";
+import { GlobalConfig } from "../config/globalConfig.js";
 import specialRoutes from "../config/specialRoutes.json" assert { type: "json" };
 
 export function getRequestBody(route, methodData) {
@@ -9,8 +9,8 @@ export function getRequestBody(route, methodData) {
 
   if (route.includes("/auth/login")) {
     return {
-      username: authCredentials.username,
-      password: authCredentials.password,
+      username: GlobalConfig.authUsername,
+      password: GlobalConfig.authPassword,
     };
   }
   if (route.includes("/register")) {

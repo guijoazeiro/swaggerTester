@@ -57,7 +57,7 @@ export async function runAllTests(options = {}) {
   }
 
   showGroupedTables();
-  generateHtmlReport(allResults);
+  if (generateReport) generateHtmlReport(allResults);
 
   return allResults;
 }

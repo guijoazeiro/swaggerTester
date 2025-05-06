@@ -142,48 +142,48 @@
         <td>GET</td>
         <td>/users</td>
         <td>200</td>
-        <td>13ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Request took 13ms. Max duration is 1ms`)">Ver aviso</button></td>
+        <td>15ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request took 15ms. Max duration is 10ms`)">Ver aviso</button></td>
       </tr>
     
-      <tr class="error">
+      <tr class="success">
         <td>GET</td>
         <td>/users/{id}</td>
-        <td>404</td>
+        <td>200</td>
         <td>3ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Usuário não encontrado`)">Ver erro</button></td>
+        <td>-</td>
       </tr>
     
-      <tr class="warning">
+      <tr class="success">
         <td>POST</td>
         <td>/auth/login</td>
         <td>200</td>
-        <td>2ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Request took 2ms. Max duration is 1ms`)">Ver aviso</button></td>
+        <td>3ms</td>
+        <td>-</td>
       </tr>
     
-      <tr class="warning">
+      <tr class="success">
         <td>POST</td>
         <td>/users</td>
         <td>201</td>
         <td>2ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Request took 2ms. Max duration is 1ms`)">Ver aviso</button></td>
+        <td>-</td>
       </tr>
     
-      <tr class="error">
+      <tr class="success">
         <td>PUT</td>
         <td>/users/{id}</td>
-        <td>404</td>
-        <td>2ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Usuário não encontrado`)">Ver erro</button></td>
+        <td>200</td>
+        <td>3ms</td>
+        <td>-</td>
       </tr>
     
-      <tr class="warning">
+      <tr class="success">
         <td>DELETE</td>
         <td>/users/{id}</td>
         <td>204</td>
         <td>2ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Request took 2ms. Max duration is 1ms`)">Ver aviso</button></td>
+        <td>-</td>
       </tr>
     
   </tbody>
@@ -205,7 +205,7 @@ new Chart(ctx, {
   data: {
     labels: ['Sucesso', 'Erro', 'Aviso'],
     datasets: [{
-      data: [0, 6, 4],
+      data: [5, 1, 1],
       backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
     }]
   },
