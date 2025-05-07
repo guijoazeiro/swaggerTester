@@ -11,8 +11,8 @@ Este projeto carrega um arquivo Swagger, gera chamadas HTTP automaticamente para
 - Node.js
 - Axios
 - Swagger/OpenAPI (arquivo JSON)
+- Prompts
 - HTML Report Generator (customizado)
-- Dotenv (variáveis de ambiente)
 
 ---
 
@@ -21,7 +21,7 @@ Este projeto carrega um arquivo Swagger, gera chamadas HTTP automaticamente para
 ```
 src/
  ├── config/
- │    └── envConfig.js        # Configurações de ambiente (baseUrl, credenciais, etc.)
+ │    └── globalConfig.js     # Configuração global utilizada pela CLI e módulos
  │
  ├── examples/
  │    └── api_example.json    # Exemplo de Swagger para rodar os testes
@@ -46,19 +46,6 @@ src/
 
 ---
 
-## ⚙️ Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz:
-
-```bash
-# .env
-BASE_URL=https://sua.api.aqui.com
-TEST_USERNAME=admin
-TEST_PASSWORD=admin
-```
-
----
-
 ## 📈 Como rodar
 
 1. Instale as dependências:
@@ -67,9 +54,7 @@ TEST_PASSWORD=admin
 pnpm install
 ```
 
-2. Certifique-se de ter o arquivo `api_example.json` em `src/examples/`.
-
-3. Execute:
+2. Execute a CLI:
 
 ```bash
 pnpm start
@@ -80,6 +65,22 @@ Ou:
 ```bash
 node src/service/testManager.js
 ```
+
+### A CLI perguntará:
+
+- Caminho do Swagger
+
+- URL base da API
+
+- Métodos que deseja testar (GET, POST, PUT, DELETE)
+
+- Se precisa de autenticação
+
+- Credenciais (usuário, senha, URL de login)
+
+- Tempo máximo de resposta permitido
+
+- Se deseja gerar relatório HTML
 
 ---
 

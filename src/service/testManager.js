@@ -5,9 +5,18 @@ import { runTestsByMethod } from "./testRunner.js";
 import { logResult, showGroupedTables } from "../utils/logger.js";
 import { generateHtmlReport } from "../utils/reporter.js";
 import authManager from "../utils/auth.js";
+import { GlobalConfig } from "../config/globalConfig.js";
 
-export async function runAllTests() {
-  const swaggerPath = path.resolve("src", "examples", "api_example.json");
+export async function runAllTests(options = {}) {
+  const {
+    swaggerPath = path.resolve("src", "examples", "api_example.json"),
+    baseUrl = "http://localhost:3000",
+    methods = ["get", "post", "put", "delete"],
+    auth = null,
+    maxDuration = 100,
+    generateReport = true,
+  } = options;
+
   const swaggerRaw = fs.readFileSync(swaggerPath, "utf-8");
   const swaggerJson = JSON.parse(swaggerRaw);
 
@@ -15,16 +24,31 @@ export async function runAllTests() {
   const securitySchemes = swaggerJson.components?.securitySchemes || {};
 
   const allResults = [];
-  const methods = ["get", "post", "put", "delete"];
+
+  GlobalConfig.init({
+    baseUrl,
+    authUrl: auth ? `${baseUrl}${auth.url}` : null,
+    authUsername: auth ? auth.username : null,
+    authPassword: auth ? auth.password : null,
+    maxDuration,
+  });
+
+  if (auth) {
+    authManager.override(auth);
+  }
 
   let token = "";
+
+  if (auth || Object.keys(securitySchemes).length > 0) {
+    token = await authManager.getToken();
+  }
 
   const swaggerRequiresAuth = Object.keys(securitySchemes).length > 0;
   if (swaggerRequiresAuth) {
     token = await authManager.getToken();
   }
 
-  console.log("📊 Resultados dos testes:");
+  console.log("\n📊 Resultados dos testes:");
 
   for (const method of methods) {
     const results = await runTestsByMethod[method](paths, token); // passa o token
@@ -33,7 +57,7 @@ export async function runAllTests() {
   }
 
   showGroupedTables();
-  generateHtmlReport(allResults);
+  if (generateReport) generateHtmlReport(allResults);
 
   return allResults;
 }

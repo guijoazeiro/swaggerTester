@@ -1,5 +1,6 @@
 import axios from "axios";
 import { formatResult } from "./formatResult.js";
+import { GlobalConfig } from "../config/globalConfig.js";
 
 export async function requestWithFormat({
   method,
@@ -26,7 +27,7 @@ export async function requestWithFormat({
       validation = validateSchema(response.data, schema);
     }
 
-    const maxDuration = 10;
+    const maxDuration = GlobalConfig.maxDuration;
 
     if (duration > maxDuration) {
       return formatResult({

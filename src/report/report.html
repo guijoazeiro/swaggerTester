@@ -49,6 +49,7 @@
     }
     tr.success { background-color: #e6ffed; }
     tr.error { background-color: #ffe6e6; }
+    tr.warning { background-color: #fff3cd; }
     .chart-container {
       width: 100%;
       max-width: 400px;
@@ -118,6 +119,7 @@
   <button onclick="filterResults('all')">Todos</button>
   <button onclick="filterResults('success')">Sucessos</button>
   <button onclick="filterResults('error')">Erros</button>
+  <button onclick="filterResults('warning')">Avisos</button>
 </div>
 
 <div class="chart-container">
@@ -136,12 +138,12 @@
   </thead>
   <tbody>
     
-      <tr class="success">
+      <tr class="warning">
         <td>GET</td>
         <td>/users</td>
         <td>200</td>
-        <td>19ms</td>
-        <td>-</td>
+        <td>15ms</td>
+        <td><button class="view-error" onclick="showErrorModal(`Request took 15ms. Max duration is 10ms`)">Ver aviso</button></td>
       </tr>
     
       <tr class="success">
@@ -152,12 +154,12 @@
         <td>-</td>
       </tr>
     
-      <tr class="error">
+      <tr class="success">
         <td>POST</td>
         <td>/auth/login</td>
-        <td>401</td>
+        <td>200</td>
         <td>3ms</td>
-        <td><button class="view-error" onclick="showErrorModal(`Request failed with status code 401`)">Ver erro</button></td>
+        <td>-</td>
       </tr>
     
       <tr class="success">
@@ -180,7 +182,7 @@
         <td>DELETE</td>
         <td>/users/{id}</td>
         <td>204</td>
-        <td>1ms</td>
+        <td>2ms</td>
         <td>-</td>
       </tr>
     
@@ -201,10 +203,10 @@ const ctx = document.getElementById('chart').getContext('2d');
 new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ['Sucesso', 'Erro'],
+    labels: ['Sucesso', 'Erro', 'Aviso'],
     datasets: [{
-      data: [5, 1],
-      backgroundColor: ['#28a745', '#dc3545'],
+      data: [5, 1, 1],
+      backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
     }]
   },
   options: {
@@ -245,15 +247,6 @@ window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
-}
-
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 </script>
 
